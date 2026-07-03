@@ -29,10 +29,15 @@ This project investigates the role of **Facebook Reactions** (Like, Love, Haha, 
 
 | Repository | Description |
 |---|---|
+| ⏱️ [timeseries-facebook-engagement-r](https://github.com/sawoodanwar/timeseries-facebook-engagement-r) | Time-series toolkit: general, COVID-19 extension & misinfo spike detection |
 | 🧠 [stm-social-media-r](https://github.com/sawoodanwar/stm-social-media-r) | STM topic modeling toolkit for social media text in R |
 | 💬 [sentiment-lexicon-comparison](https://github.com/sawoodanwar/sentiment-lexicon-comparison) | AFINN, Bing, NRC lexicon comparison in R |
 | 📊 [meta-content-analysis](https://github.com/sawoodanwar/meta-content-analysis) | Facebook & Instagram health misinformation analysis |
 | 🗳️ [reddit-political-misinfo-coding](https://github.com/sawoodanwar/reddit-political-misinfo-coding) | Reddit political communication manual coding project |
+| 🔄 [cross-platform-engagement-analysis](https://github.com/sawoodanwar/cross-platform-engagement-analysis) | Unified cross-platform engagement framework (FB, IG, Reddit) |
+| 🔴 [disinformation-detection-ml](https://github.com/sawoodanwar/disinformation-detection-ml) | ML classifier for disinformation detection in news posts |
+| 🟣 [nlp-news-classification-r](https://github.com/sawoodanwar/nlp-news-classification-r) | Supervised NLP news classification by topic & credibility |
+| 🟢 [crowdtangle-meta-api-workflow](https://github.com/sawoodanwar/crowdtangle-meta-api-workflow) | Academic data collection pipeline: CrowdTangle & Meta API |
 
 ---
 
@@ -135,8 +140,6 @@ facebook-reactions-covid19-india/
 ---
 
 ## 📖 Citation
-
-If you use ideas, methodology, or findings from this work, please cite:
 
 ```bibtex
 @phdthesis{anwar2025facebook,
