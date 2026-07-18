@@ -46,9 +46,10 @@ preferred-citation:
       orcid: "https://orcid.org/0009-0000-2819-9179"
     - family-names: Giglietto
       given-names: Fabio
+      orcid: "https://orcid.org/0000-0001-5491-4085"
   title: "Facebook Reactions as Emotional Indicators: Analyzing Public Engagement with COVID-19 Pandemic News on Indian Media Platforms During the Early Lockdown Phase"
   journal: "Frontiers in Sociology"
-  volume: 9
+  volume: "9"
   year: 2024
   doi: "10.3389/fsoc.2024.1379265"
   url: "https://doi.org/10.3389/fsoc.2024.1379265"
@@ -64,6 +65,6 @@ references:
       name: "University of Urbino Carlo Bo"
       city: Urbino
       country: IT
-    thesis-type: "PhD thesis"
+    notes: "PhD thesis, Cycle XXXVII, Academic Year 2023/2024"
     year: 2025
     url: "https://ora.uniurb.it/handle/11576/2761691"
