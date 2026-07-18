@@ -16,11 +16,20 @@ authors:
     orcid: "https://orcid.org/0009-0000-2819-9179"
     affiliation: "University of Urbino Carlo Bo, Italy"
     email: anwar1524@gmail.com
+contact:
+  - family-names: Anwar
+    given-names: Sawood
+    email: anwar1524@gmail.com
+    orcid: "https://orcid.org/0009-0000-2819-9179"
 repository-code: "https://github.com/sawoodanwar/facebook-reactions-covid19-india"
 url: "https://sawoodanwar.github.io/"
 license: MIT
 version: "1.0.0"
 date-released: "2025-09-22"
+identifiers:
+  - type: doi
+    value: "10.3389/fsoc.2024.1379265"
+    description: "DOI of the associated peer-reviewed journal article (Frontiers in Sociology, 2024)"
 keywords:
   - Facebook Reactions
   - COVID-19
@@ -49,6 +58,7 @@ preferred-citation:
   title: "Facebook Reactions as Emotional Indicators: Analyzing Public Engagement with COVID-19 Pandemic News on Indian Media Platforms During the Early Lockdown Phase"
   journal: "Frontiers in Sociology"
   volume: "9"
+  article-number: "1379265"
   year: 2024
   doi: "10.3389/fsoc.2024.1379265"
   url: "https://doi.org/10.3389/fsoc.2024.1379265"
