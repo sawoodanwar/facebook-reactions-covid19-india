@@ -1,0 +1,69 @@
+cff-version: 1.2.0
+message: "If you use this code or methodology, please cite both the journal article and the doctoral thesis below."
+type: software
+title: "Facebook Reactions as Emotional Indicators: Multi-Method Analysis of COVID-19 News Engagement on Indian Media Platforms"
+abstract: >
+  This repository contains the full analytical code for the doctoral dissertation
+  and associated journal article by Sawood Anwar (University of Urbino Carlo Bo, 2025).
+  It employs a mixed-methods approach — combining time-series analysis, BERTopic
+  embedding-based topic modelling, LLM-assisted cluster labelling, and lexicon-based
+  sentiment analysis — to examine 68,319 Facebook posts from four major English-language
+  Indian news outlets (The Times of India, The Hindu, Indian Express, Hindustan Times)
+  covering COVID-19 news from March 2020 to March 2022.
+authors:
+  - family-names: Anwar
+    given-names: Sawood
+    orcid: "https://orcid.org/0009-0000-2819-9179"
+    affiliation: "University of Urbino Carlo Bo, Italy"
+    email: anwar1524@gmail.com
+repository-code: "https://github.com/sawoodanwar/facebook-reactions-covid19-india"
+url: "https://sawoodanwar.github.io/"
+license: MIT
+version: "1.0.0"
+date-released: "2025-09-22"
+keywords:
+  - Facebook Reactions
+  - COVID-19
+  - India
+  - sentiment analysis
+  - topic modelling
+  - BERTopic
+  - NLP
+  - social media
+  - computational communication
+  - health communication
+  - time-series analysis
+  - misinformation
+  - The Times of India
+  - The Hindu
+  - Indian Express
+  - Hindustan Times
+preferred-citation:
+  type: article
+  authors:
+    - family-names: Anwar
+      given-names: Sawood
+      orcid: "https://orcid.org/0009-0000-2819-9179"
+    - family-names: Giglietto
+      given-names: Fabio
+  title: "Facebook Reactions as Emotional Indicators: Analyzing Public Engagement with COVID-19 Pandemic News on Indian Media Platforms During the Early Lockdown Phase"
+  journal: "Frontiers in Sociology"
+  volume: 9
+  year: 2024
+  doi: "10.3389/fsoc.2024.1379265"
+  url: "https://doi.org/10.3389/fsoc.2024.1379265"
+  issn: "2297-7775"
+references:
+  - type: thesis
+    authors:
+      - family-names: Anwar
+        given-names: Sawood
+        orcid: "https://orcid.org/0009-0000-2819-9179"
+    title: '"Facebook Reactions" as Emotional Indicators: A Multi-Method Approach to Analyzing User Engagement with COVID-19 News on Indian Media Platforms'
+    institution:
+      name: "University of Urbino Carlo Bo"
+      city: Urbino
+      country: IT
+    thesis-type: "PhD thesis"
+    year: 2025
+    url: "https://ora.uniurb.it/handle/11576/2761691"
