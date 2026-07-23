@@ -4,29 +4,37 @@
 # Author: Sawood Anwar | University of Urbino Carlo Bo
 # Publication: Frontiers in Sociology, 2024 | DOI: 10.3389/fsoc.2024.1379265
 #
-# Methods: Percentage Change Method + Z-score with Rolling Statistics
-# See Thesis Chapter 4 (pp. 55-63) and Appendix B (pp. 170-181)
+# Methods:
+#   1. Percentage Change Method (Thesis p. 57)
+#   2. Z-score Method with 7-day Rolling Statistics (Thesis pp. 57–62)
+#
+# Source: Thesis Chapter 4, Section 4.2 (pp. 54–63) and
+#         Appendix B (pp. 170–181) — verbatim R code
 # =============================================================================
 
-library(dplyr)
-library(ggplot2)
-library(zoo)
-library(readr)
-library(lubridate)
-library(scales)
+# Required Libraries (Thesis p. 58 and Appendix B p. 170)
+library(dplyr)      # For data manipulation
+library(ggplot2)    # For data visualization
+library(zoo)        # For time series analysis
+library(readr)      # For CSV file operations
+library(lubridate)  # For date handling
+library(scales)     # For plot formatting
 
-# Source preprocessing script
+# Source preprocessing (load df)
 # source("scripts/R/01_data_import_preprocessing.R")
 
+# Define reaction types (Thesis Appendix B, p. 172)
+reactions <- c("like", "love", "wow", "haha", "sad", "angry", "care")
+
 # =============================================================================
-# Main Analysis Function
-# Applies both percentage change and Z-score methods per reaction per outlet
+# Main Analysis Function (Thesis Appendix B, pp. 174–179)
 # =============================================================================
 analyze_reaction <- function(data, reaction, outlet) {
 
   # Map reaction names to CrowdTangle column names
   reaction_col <- paste0("statistics.actual.", reaction, "Count")
 
+  # Ensure the reaction column exists
   if (!reaction_col %in% names(data)) {
     cat("Column", reaction_col, "not found for", outlet, "\n")
     return(NULL)
@@ -39,74 +47,84 @@ analyze_reaction <- function(data, reaction, outlet) {
     summarize(reaction_count = sum(!!sym(reaction_col))) %>%
     ungroup() %>%
     mutate(
-      diff = reaction_count - lag(reaction_count),
+      diff       = reaction_count - lag(reaction_count),
       pct_change = diff / lag(reaction_count) * 100
     )
 
-  # -------------------------------------------------------------------------
-  # Method 1: Z-score with 7-day Rolling Statistics (Thesis pp. 57-62)
-  # Z = (X - rolling_mean) / rolling_sd
-  # Days with |Z| > 2 are flagged as unusual
-  # -------------------------------------------------------------------------
+  # ---------------------------------------------------------------------------
+  # Calculate rolling mean and standard deviation
+  # Thesis p. 58 / Appendix B p. 175 (verbatim)
+  # ---------------------------------------------------------------------------
   data$rolling_mean <- rollmean(data$reaction_count, k = 7, fill = NA, align = "right")
-  data$rolling_sd   <- rollapply(data$reaction_count, width = 7, FUN = sd, fill = NA, align = "right")
-  data$z_score      <- (data$reaction_count - data$rolling_mean) / data$rolling_sd
+  data$rolling_sd   <- rollapply(data$reaction_count, width = 7, FUN = sd,
+                                  fill = NA, align = "right")
 
-  # -------------------------------------------------------------------------
-  # Method 2: Percentage Change — 95th percentile threshold (Thesis p. 57)
-  # -------------------------------------------------------------------------
-  z_score_threshold   <- 2
+  # Calculate Z-scores (Thesis p. 59 / Appendix B p. 175)
+  data$z_score <- (data$reaction_count - data$rolling_mean) / data$rolling_sd
+
+  # ---------------------------------------------------------------------------
+  # Identify unusual days using both methods (Thesis p. 60 / Appendix B p. 175)
+  # Z-score threshold = 2; pct_change threshold = 95th percentile
+  # ---------------------------------------------------------------------------
+  z_score_threshold    <- 2
   pct_change_threshold <- quantile(abs(data$pct_change), 0.95, na.rm = TRUE)
 
-  # Flag unusual days using both methods combined
-  data$unusual <- abs(data$z_score) > z_score_threshold &
-                  abs(data$pct_change) > pct_change_threshold
+  data$unusual <- abs(data$z_score)      > z_score_threshold &
+                  abs(data$pct_change)   > pct_change_threshold
 
   # Top 5 sudden changes
-  top_changes <- data %>%
-    arrange(desc(abs(pct_change))) %>%
-    head(5)
+  top_changes  <- data %>% arrange(desc(abs(pct_change))) %>% head(5)
 
   # Extract unusual days
   unusual_days <- data %>%
     filter(unusual) %>%
     select(Date, reaction_count, z_score, pct_change)
 
-  # -------------------------------------------------------------------------
-  # Visualisation
-  # -------------------------------------------------------------------------
+  # ---------------------------------------------------------------------------
+  # Create Visualisation (Thesis Appendix B, pp. 176–179)
+  # ---------------------------------------------------------------------------
   p <- ggplot(data, aes(x = Date, y = reaction_count)) +
-    geom_line(color = "blue", linewidth = 0.5) +
+    # Base line
+    geom_line(color = "blue", size = 0.5) +
+    # Unusual days points
     geom_point(data = unusual_days, color = "red", size = 3) +
-    geom_smooth(method = "loess", color = "green", se = FALSE, linewidth = 1) +
+    # Trend line
+    geom_smooth(method = "loess", color = "green", se = FALSE, size = 1) +
+    # Labels and titles
     labs(
       title    = paste("Reaction:", reaction, "for", outlet),
       subtitle = "Red points indicate unusual days",
       x        = "Date",
       y        = paste(reaction, "Count")
     ) +
+    # Theme customization
     theme_minimal() +
     theme(
-      plot.title    = element_text(face = "bold", size = 16),
+      plot.title    = element_text(face = "bold",   size = 16),
       plot.subtitle = element_text(face = "italic", size = 12),
       axis.title    = element_text(face = "bold"),
       axis.text.x   = element_text(angle = 45, hjust = 1)
     ) +
+    # Scale customization
     scale_x_date(date_breaks = "1 month", date_labels = "%b %Y") +
     scale_y_continuous(labels = comma_format())
 
-  # -------------------------------------------------------------------------
-  # Save Outputs
-  # -------------------------------------------------------------------------
+  # ---------------------------------------------------------------------------
+  # Save Outputs (Thesis Appendix B, p. 179)
+  # ---------------------------------------------------------------------------
   dir.create("results", showWarnings = FALSE)
 
-  ggsave(paste0("results/", outlet, "_", reaction, "_plot.png"), p, width = 12, height = 8, dpi = 300)
-  write_csv(data, paste0("results/", outlet, "_", reaction, "_analysis.csv"))
+  ggsave(paste0("results/", outlet, "_", reaction, "_plot.png"),
+         p, width = 12, height = 8, dpi = 300)
+
+  write_csv(data,
+            paste0("results/", outlet, "_", reaction, "_analysis.csv"))
 
   if (nrow(unusual_days) > 0) {
     unusual_days_with_url <- unusual_days %>%
       mutate(URL = paste0("https://www.facebook.com/", outlet, "/posts/", Date))
-    write_csv(unusual_days_with_url, paste0("results/", outlet, "_", reaction, "_unusual_days.csv"))
+    write_csv(unusual_days_with_url,
+              paste0("results/", outlet, "_", reaction, "_unusual_days.csv"))
     cat("Unusual days file created for", reaction, "reaction of", outlet, "\n")
   } else {
     cat("No unusual days found for", reaction, "reaction of", outlet, "\n")
@@ -116,13 +134,13 @@ analyze_reaction <- function(data, reaction, outlet) {
 }
 
 # =============================================================================
-# Execute Analysis: Loop over all outlets and all reaction types
+# Execution: loop over all outlets and all reaction types
+# Thesis Appendix B, pp. 172–173
 # =============================================================================
-# Requires df to be loaded via script 01
+# Requires df to be loaded via Script 01
 # source("scripts/R/01_data_import_preprocessing.R")
 
-reactions <- c("like", "love", "wow", "haha", "sad", "angry", "care")
-outlets   <- unique(df$account.name)
+outlets <- unique(df$account.name)
 
 for (outlet in outlets) {
   outlet_data <- filter(df, account.name == outlet)
